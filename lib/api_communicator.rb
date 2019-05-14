@@ -2,32 +2,34 @@ require 'rest-client'
 require 'json'
 require 'pry'
 
-def get_character_movies_from_api(character_name)
-  #make the web request
-  response_string = RestClient.get('http://www.swapi.co/api/people/')
+def make_web_request(url)
+  response_string = RestClient.get(url)
   response_hash = JSON.parse(response_string)
-
-  api_characters = response_hash["results"]
-
-  film_urls = []
-
-  api_characters.each do |character|
-    if character_name == character["name"]
-      film_urls = character["films"]
-    end
-    film_urls
-  end
-  url_to_info(film_urls)
 end
 
+def get_character_movies_from_api(character_name)
+  #make the web request
+  make_web_request('http://www.swapi.co/api/people/')
+  #retrieve an array of character hashes
+  characters_array = response_hash["results"]
+  #finds specific character's hash and returns array of film urls
+  film_urls_array = character_name_to_film_urls(characters_array,character_name)
+  #makes web request for each url and returns array of movie info hashes
+  url_to_info(film_urls_array)
+end
+
+#
 def url_to_info(urls)
   films = []
-
   urls.each do |url|
-  film_url_string = RestClient.get(url)
-  films << film_url_hash = JSON.parse(film_url_string)
+  films << response_hash = make_web_request(url)
     end
   films
+end
+
+def character_name_to_film_urls(characters_array,character_name)
+  correct_character = characters_array.find { |character| character["name"] == character_name }
+  correct_character["films"]
 end
 
   # iterate over the response hash to find the collection of `films` for the given `character`
@@ -46,7 +48,6 @@ end
 def print_movies(films)
   # some iteration magic and puts out the movies in a nice list
   films.each do |film|
-
     puts ""
     puts "movie title:"
     puts film["title"]
