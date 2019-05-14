@@ -29,14 +29,6 @@ def url_to_info(urls)
     end
   films
 end
-# films = []
-#
-# film_urls.each do |url|
-# film_url_string = RestClient.get(url)
-# films << film_url_hash = JSON.parse(film_url_string)
-#
-# end
-# films
 
   # iterate over the response hash to find the collection of `films` for the given `character`
   # collect those film API urls, make a web request to each URL to get the info
@@ -54,13 +46,11 @@ end
 def print_movies(films)
   # some iteration magic and puts out the movies in a nice list
   films.each do |film|
-    # binding.pry
 
     puts ""
     puts "movie title:"
     puts film["title"]
   end
-# binding.pry
 end
 
 def show_character_movies(character)
