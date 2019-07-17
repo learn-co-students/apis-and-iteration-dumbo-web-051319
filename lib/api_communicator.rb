@@ -7,6 +7,35 @@ def get_character_movies_from_api(character_name)
   response_string = RestClient.get('http://www.swapi.co/api/people/')
   response_hash = JSON.parse(response_string)
 
+  people = response_hash
+  array = people['results']
+  array.each do |infos|
+    if infos['name'] == character_name
+      infos['films']
+
+      # infos['films'].each do |website|
+      #   website_return_hash = RestClient.get(website)
+      #   film_website = JSON.parse(website_return_hash)
+      #   website = film_website['title']
+      #   puts website
+
+
+
+  # if the character they put in = characters name in the hash
+  # then we give them a list of websites
+  # we turn the websites into titles
+  #   restclient the website
+  #   json the that
+  #   then we iterate that json hash
+  #   to find the title
+  #   once we have the title we set the title = to website
+
+
+
+
+
+  # input a character
+  # we get the film
   # iterate over the response hash to find the collection of `films` for the given
   #   `character`
   # collect those film API urls, make a web request to each URL to get the info
@@ -17,16 +46,33 @@ def get_character_movies_from_api(character_name)
   #  and that method will do some nice presentation stuff like puts out a list
   #  of movies by title. Have a play around with the puts with other info about a given film.
 end
+end
+end
+
+
+#get_character_movies_from_api('R2-D2')
 
 def print_movies(films)
+  film_string = RestClient.get('http://www.swapi.co/api/films/')
+  film_hash = JSON.parse(film_string)
+  # binding.pry
+
+  film = film_hash["results"]
+  film.each_with_index do |movie, i|
+    puts "#{i + 1}. #{movie["title"]}"
+  end
+  end
   # some iteration magic and puts out the movies in a nice list
-end
+
 
 def show_character_movies(character)
   films = get_character_movies_from_api(character)
   print_movies(films)
-end
 
+
+
+end
+show_character_movies("Luke Skywalker")
 ## BONUS
 
 # that `get_character_movies_from_api` method is probably pretty long. Does it do more than one job?
